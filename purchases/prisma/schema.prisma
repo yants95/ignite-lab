@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id String @id @default(uuid())
+
+  created_at DateTime   @default(now())
+  updated_at DateTime?  @updatedAt
+  purchases  Purchase[]
+}
+
+model Product {
+  id String @id @default(uuid())
+
+  title String
+  slug  String @unique
+
+  created_at  DateTime   @default(now())
+  updated_at  DateTime?  @updatedAt
+  purchasedOn Purchase[]
+}
+
+enum PurchaseStatus {
+  PENDING
+  APPROVED
+  FAILED
+}
+
+model Purchase {
+  id String @id @default(uuid())
+
+  status PurchaseStatus @default(PENDING)
+
+  customer    Customer @relation(fields: [customer_id], references: [id])
+  customer_id String
+
+  product    Product @relation(fields: [product_id], references: [id])
+  product_id String
+
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+}
