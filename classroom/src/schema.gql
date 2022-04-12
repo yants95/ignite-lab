@@ -28,6 +28,16 @@ scalar DateTime
 
 type Query {
   courses: [Course!]!
+  course(id: String!): Course!
   enrollments: [Enrollment!]!
+  me: Student!
   students: [Student!]!
+}
+
+type Mutation {
+  createCourse(params: CreateCourseInput!): Course!
+}
+
+input CreateCourseInput {
+  title: String!
 }

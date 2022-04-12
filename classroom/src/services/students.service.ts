@@ -10,7 +10,7 @@ export class StudentsService {
   }
 
   getStudentByAuthUserId(authUserId: string) {
-    return this.prisma.student.findFirst({
+    return this.prisma.student.findUnique({
       where: {
         auth_user_id: authUserId,
       },
